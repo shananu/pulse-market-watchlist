@@ -3,10 +3,10 @@ spring:
     name: pulse-backend
 
   datasource:
-  url: ${SPRING_DATASOURCE_URL}
-  username: ${SPRING_DATASOURCE_USERNAME}
-  password: ${SPRING_DATASOURCE_PASSWORD}
-  driver-class-name: org.postgresql.Driver
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/pulse?options=-c%20TimeZone%3DUTC}
+    username: ${SPRING_DATASOURCE_USERNAME:pulse}
+    password: ${SPRING_DATASOURCE_PASSWORD:pulse}
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
@@ -29,3 +29,8 @@ management:
     web:
       exposure:
         include: health,info
+
+
+app:
+  cors:
+    allowed-origin: ${APP_CORS_ALLOWED_ORIGIN:http://localhost:3000}
