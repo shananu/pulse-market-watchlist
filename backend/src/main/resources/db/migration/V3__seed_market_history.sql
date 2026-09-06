@@ -1,0 +1,23 @@
+INSERT INTO market_snapshots
+    (symbol, price, volume, timestamp, source)
+VALUES
+    ('HDFCBANK', 1748.00, 950000, NOW() - INTERVAL '20 days', 'DEMO'),
+    ('HDFCBANK', 1752.00, 980000, NOW() - INTERVAL '19 days', 'DEMO'),
+    ('HDFCBANK', 1749.00, 1020000, NOW() - INTERVAL '18 days', 'DEMO'),
+    ('HDFCBANK', 1755.00, 970000, NOW() - INTERVAL '17 days', 'DEMO'),
+    ('HDFCBANK', 1751.00, 1010000, NOW() - INTERVAL '16 days', 'DEMO'),
+    ('HDFCBANK', 1758.00, 990000, NOW() - INTERVAL '15 days', 'DEMO'),
+    ('HDFCBANK', 1754.00, 1050000, NOW() - INTERVAL '14 days', 'DEMO'),
+    ('HDFCBANK', 1759.00, 1030000, NOW() - INTERVAL '13 days', 'DEMO'),
+    ('HDFCBANK', 1756.00, 980000, NOW() - INTERVAL '12 days', 'DEMO'),
+    ('HDFCBANK', 1761.00, 1010000, NOW() - INTERVAL '11 days', 'DEMO'),
+    ('HDFCBANK', 1757.00, 990000, NOW() - INTERVAL '10 days', 'DEMO'),
+    ('HDFCBANK', 1763.00, 1040000, NOW() - INTERVAL '9 days', 'DEMO'),
+    ('HDFCBANK', 1759.00, 970000, NOW() - INTERVAL '8 days', 'DEMO'),
+    ('HDFCBANK', 1765.00, 1020000, NOW() - INTERVAL '7 days', 'DEMO'),
+    ('HDFCBANK', 1761.00, 1000000, NOW() - INTERVAL '6 days', 'DEMO'),
+    ('HDFCBANK', 1766.00, 1060000, NOW() - INTERVAL '5 days', 'DEMO'),
+    ('HDFCBANK', 1762.00, 990000, NOW() - INTERVAL '4 days', 'DEMO'),
+    ('HDFCBANK', 1768.00, 1030000, NOW() - INTERVAL '3 days', 'DEMO'),
+    ('HDFCBANK', 1764.00, 1010000, NOW() - INTERVAL '2 days', 'DEMO'),
+    ('HDFCBANK', 1758.00, 980000, NOW() - INTERVAL '1 day', 'DEMO');
