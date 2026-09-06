@@ -9,7 +9,7 @@ type Stock = {
     exchange: string;
 };
 
-const API = "http://localhost:8080";
+const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
 
 export default function WatchlistPanel() {
     const [stocks, setStocks] = useState<Stock[]>([]);
