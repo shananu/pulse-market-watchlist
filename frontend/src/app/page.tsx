@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import WatchlistPanel from "@/components/WatchlistPanel";
 import ExplanationPanel from "@/components/ExplanationPanel";
 
+
+const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+
 type Attention = {
   id: number;
   symbol: string;
@@ -37,7 +40,7 @@ export default function Home() {
 
   async function load() {
     try {
-      const p = await fetch("http://localhost:8080/api/pulse", {
+      const p = await fetch(`${API}/api/pulse`, {
         cache: "no-store",
       }).then(r => r.json());
 
@@ -46,7 +49,7 @@ export default function Home() {
       if (p.attentionItems?.length) {
         const symbol = p.attentionItems[0].symbol;
         const s = await fetch(
-          `http://localhost:8080/api/signals/${symbol}/signals`,
+          `${API}/api/signals/${symbol}/signals`,
           { cache: "no-store" }
         ).then(r => r.json());
 
@@ -62,7 +65,7 @@ export default function Home() {
   }
 
   async function check() {
-    await fetch("http://localhost:8080/api/pulse/check", {
+    await fetch(`${API}/api/pulse/check`, {
       method: "POST",
     });
     setReviewed(false);
@@ -71,8 +74,8 @@ export default function Home() {
 
 
   async function resetDemo() {
-    await fetch("http://localhost:8080/api/attention/reset", { method: "POST" });
-    await fetch("http://localhost:8080/api/significance/demo-minute/0", { method: "POST" });
+    await fetch(`${API}/api/attention/reset`, { method: "POST" });
+    await fetch(`${API}/api/significance/demo-minute/0`, { method: "POST" });
     setReviewed(false);
     setShowDetails(false);
     setReplayStep("");
@@ -85,7 +88,7 @@ export default function Home() {
     setReplaying(true);
     setShowDetails(false);
 
-    await fetch("http://localhost:8080/api/pulse/reset", {
+    await fetch(`${API}/api/pulse/reset`, {
       method: "POST",
     });
 
@@ -102,12 +105,12 @@ export default function Home() {
         setReplayStep(label);
 
         await fetch(
-          `http://localhost:8080/api/significance/demo-minute/${minute}`,
+          `${API}/api/significance/demo-minute/${minute}`,
           { method: "POST" }
         );
 
         await fetch(
-          "http://localhost:8080/api/significance/evaluate/HDFCBANK",
+          `${API}/api/significance/evaluate/HDFCBANK`,
           { method: "POST" }
         );
 
@@ -127,7 +130,7 @@ export default function Home() {
     if (!item) return;
 
     await fetch(
-      `http://localhost:8080/api/attention/${item.id}/review`,
+      `${API}/api/attention/${item.id}/review`,
       { method: "POST" }
     );
 
@@ -156,7 +159,7 @@ export default function Home() {
     );
   }
 
-  const item = pulse.attentionItems[0];
+  const item = pulse?.attentionItems?.[0];
 
   const price = signals.find(
     s => s.signalType === "PRICE_ANOMALY"
