@@ -2,132 +2,158 @@
 
 ### Your watchlist watches the market. You watch what matters.
 
-Pulse is an intelligent market watchlist designed around a simple question:
+**PULSE** is a smart market watchlist that detects meaningful changes across your portfolio/watchlist, ranks what deserves attention, explains why it matters, and shows the evidence behind the conclusion.
 
-> **What actually deserves my attention?**
+Instead of making users repeatedly scan prices, PULSE turns a watchlist into an **attention system**.
 
-Traditional watchlists show investors everything that happened. Pulse filters the noise, detects meaningful changes, measures their significance, explains why they matter, and shows the evidence behind the conclusion.
-
-And when nothing important happens, Pulse says so.
-
----
-
-## The Problem
-
-A watchlist is supposed to help investors monitor the stocks they care about.
-
-In practice, it creates another problem:
-
-- Prices move constantly.
-- Volume changes constantly.
-- News arrives constantly.
-- Markets move for reasons that may or may not matter.
-- Investors still have to manually scan everything.
-
-The result is **information overload**.
-
-The difficult problem is not:
-
-> "Can we show market data?"
-
-It is:
-
-> **"Can we determine what changed enough to deserve a person's attention?"**
-
-Pulse is built around solving that problem.
+> A traditional watchlist tells you what happened.  
+> PULSE tells you what changed, whether it matters, and why.
 
 ---
 
-# The Pulse Loop
+## 🚀 Live Demo
+
+**Production:**  
+https://frontend-kappa-three-uzb7061grc.vercel.app/
+
+**Backend:**  
+https://pulse-backend-mnar.onrender.com/
+
+---
+
+# The Problem
+
+A traditional watchlist is mostly a collection of numbers.
+
+When a user returns after several hours, they have to manually determine:
+
+- Which stocks actually moved?
+- Was the movement unusual?
+- Did the stock move differently from the market?
+- Was volume unusually high?
+- Is there a meaningful event?
+- Which changes deserve attention?
+- What can safely be ignored?
+
+The problem is not a lack of market information.
+
+The problem is **too much information competing for attention**.
+
+PULSE is designed around one question:
+
+> **"What deserves my attention right now?"**
+
+---
+
+# What PULSE Does
+
+PULSE continuously turns market observations into prioritized attention.
+
+### The core loop
 
 ```text
-DETECT
-   ↓
-FILTER
-   ↓
-CORRELATE
-   ↓
-RANK
-   ↓
-EXPLAIN
-   ↓
-EVIDENCE
-   ↓
-REVIEW
-   ↓
-REMEMBER
+Detect
+  ↓
+Filter
+  ↓
+Correlate
+  ↓
+Rank
+  ↓
+Explain
+  ↓
+Provide Evidence
+  ↓
+Review
+  ↓
+Remember
 
-Pulse turns raw market observations into an attention-oriented experience.
+The system intentionally supports an important outcome:
 
-1. Detect
+Nothing important happened.
 
-Identify unusual price, volume, and relative-performance behavior.
-
-2. Filter
-
-Avoid turning every small movement into an alert.
-
-3. Correlate
-
-Look for multiple independent signals occurring together.
-
-4. Rank
-
-Calculate a deterministic significance score.
-
-5. Explain
-
-Translate the signals into a concise explanation.
-
-6. Evidence
-
-Show the observations supporting the conclusion.
-
-7. Review
-
-Let the user mark an attention item as reviewed.
-
-8. Remember
-
-Track the user's checkpoint so Pulse can tell what changed since their last visit.
+If none of the stocks in a watchlist have a meaningful change, PULSE does not manufacture alerts.
 
 Product Experience
-Attention Center
+1. Attention Center
 
-The home screen answers:
+The home screen is designed around attention rather than raw market data.
+
+Instead of showing a wall of prices, it answers:
 
 What deserves my attention?
 
-Instead of displaying a wall of market data, Pulse surfaces only meaningful changes.
-
 Example:
 
-HDFC Bank                         SIGNIFICANT
+3 meaningful changes
 
--3.31%       12.0σ       2.69×       -3.81%
-Price Move    Anomaly     Volume      vs Market
+HDFC Bank
+-3.31%
+SIGNIFICANT
 
-Price moved unusually while volume accelerated.
+12.0σ price anomaly
+2.69× volume
+-3.81% vs market
 
-Three independent signals agree this deserves attention.
+Why this matters →
 
-Attention Score
-80 / 100
+Below the important changes:
 
-The remaining stocks are summarized as:
+22 other stocks
 
-5 other stocks — Nothing material detected.
+Nothing material detected.
 
-This is intentional.
+This keeps the user focused on signal instead of noise.
 
-Silence is a valid product outcome.
+2. Smart Watchlist
 
-What Makes a Change Meaningful?
+Users can:
 
-Pulse uses a deterministic significance engine rather than asking an AI model to decide whether a market movement matters.
+Create a watchlist
+Add stocks
+Remove stocks
+Persist their watchlist
+View their tracked securities
 
-The current score combines:
+The current demo includes stocks such as:
 
+HDFC Bank
+Reliance
+Infosys
+TCS
+ICICI Bank
+SBI
+
+The watchlist is not just a collection of symbols.
+
+It is the input to the intelligence engine that determines what deserves attention.
+
+3. Market Intelligence
+
+PULSE evaluates multiple independent signals.
+
+Signal families
+Signal	What it detects
+Price Anomaly	Unusual price movement relative to historical volatility
+Volume Anomaly	Unusual trading volume
+Relative Performance	Divergence from the market/benchmark
+Event Relevance	Potentially meaningful corporate events
+Persistence	Whether a move persists instead of being a transient spike
+
+The system combines these signals into a single significance score.
+
+Significance Engine
+
+PULSE uses a deterministic scoring system rather than allowing an LLM to decide whether something is important.
+
+This makes the system:
+
+Explainable
+Testable
+Reproducible
+Easier to tune
+Safer for financial information
+Score composition
 Signal	Weight
 Price anomaly	30%
 Relative performance	25%
@@ -135,92 +161,87 @@ Event relevance	20%
 Volume anomaly	15%
 Persistence	10%
 
-A convergence bonus is applied when multiple strong independent signals agree.
+A convergence bonus is added when multiple independent signals agree.
 
-Significance =
-    30% Price Anomaly
-  + 25% Relative Performance
-  + 20% Event Relevance
-  + 15% Volume Anomaly
-  + 10% Persistence
-  + Convergence Bonus
-Significance Bands
-0 – 30       NORMAL
-30 – 50      WATCH
-50 – 70      NOTABLE
-70 – 100     SIGNIFICANT
+3 strong signals → +10
+4+ strong signals → +15
 
-The system intentionally favors precision over recall.
+The final score is capped at 100.
 
-A noisy alert system destroys attention.
+Significance bands
+Score	Band
+0–29	Normal
+30–49	Watch
+50–69	Notable
+70–100	Significant
 
-Signal Intelligence
+This creates a clear distinction between:
+
+"The stock moved."
+
+and
+
+"The stock moved in a way that is unusual enough to deserve attention."
+
+Statistical Signals
 Price Anomaly
 
-Pulse compares the current return against historical volatility.
+Historical daily returns are calculated from a rolling historical window.
 
 daily return =
 (current price - previous price) / previous price
 
+Historical volatility is calculated from historical returns.
+
+The current move is then evaluated relative to that volatility:
+
 z-score =
 absolute(current return) / historical volatility
 
-The baseline uses recent historical observations rather than a hardcoded threshold.
+The resulting anomaly is converted into a normalized score.
 
 Volume Anomaly
 
-Current volume is compared against the historical average.
+Current volume is compared against historical volume:
 
 volume ratio =
 current volume / historical average volume
 
-Higher ratios increase the volume anomaly score.
+Example:
 
+1.0× → normal
+1.5× → notable
+2.0× → significant
+3.0× → extreme
 Relative Performance
 
-A stock's movement is compared with the broader market.
+PULSE compares the stock's return with a benchmark.
 
 divergence =
 stock return - benchmark return
 
-This prevents Pulse from treating a market-wide move as a stock-specific event.
+This helps distinguish:
 
-For example:
+The entire market is falling
 
-HDFC Bank       -3.31%
-Benchmark       +0.50%
+from:
 
-Divergence      -3.81%
+This stock is falling significantly more than the market.
 Persistence
 
-Pulse considers whether an unusual movement persists across observations.
+A temporary price spike should not automatically become a major attention event.
 
-A temporary spike should not automatically become a major attention event.
+PULSE therefore considers whether a move persists across multiple observations.
 
-Evidence, Not Guesswork
+1 interval   → weak
+2 intervals  → moderate
+3+ intervals → strong
 
-Pulse separates detection from explanation.
-
-The intelligence engine determines:
-
-what changed
-how unusual it was
-how strongly the signals agree
-how significant the event is
-
-The explanation layer receives those structured observations and turns them into understandable context.
-
-The system does not allow an AI model to invent market facts or determine significance.
-
-Design Principle
-
-Deterministic intelligence decides what matters. AI helps explain it.
-
-If an explanation service is unavailable, the product can still present the underlying evidence and deterministic explanation.
+This reduces noisy one-off alerts.
 
 Attention Lifecycle
 
-Every meaningful event follows a simple lifecycle:
+PULSE treats attention as a stateful process.
 
 DETECTED
    ↓
@@ -230,136 +251,272 @@ VIEWED
    ↓
 REVIEWED
 
-If a previously reviewed event changes materially, it can become relevant again.
+If an already-reviewed event changes materially, it can become relevant again.
 
-This prevents Pulse from repeatedly surfacing the same unchanged information while still allowing genuinely new developments to regain attention.
+REVIEWED
+   ↓
+NEW MATERIAL CHANGE
+   ↓
+SURFACED AGAIN
+
+This prevents the system from repeatedly showing the same event while still allowing genuinely new information to resurface.
+
+Last Checked State
+
+A key part of PULSE is understanding the user's checkpoint.
+
+The system stores:
+
+lastCheckedAt
+
+When the user returns, PULSE compares the current state against that checkpoint.
+
+This allows the product to answer:
+
+"What changed since I last checked?"
+
+rather than simply:
+
+"What is the market doing right now?"
+
+Stock Intelligence
+
+Selecting an attention item opens a deeper intelligence view.
+
+It answers:
+
+What changed?
+
+Price movement and anomaly metrics.
+
+Does it matter?
+
+Significance score and signal convergence.
+
+Why?
+
+Relative performance, volume and supporting context.
+
+Why trust it?
+
+Evidence from the underlying signals and market observations.
+
+The goal is to let users move from:
+
+Attention
+   ↓
+Understanding
+   ↓
+Evidence
+
+without leaving the product.
 
 Market Replay
 
-Pulse includes a deterministic market replay designed to demonstrate the complete intelligence pipeline.
+PULSE includes a deterministic market replay mode for demonstrating how attention evolves over time.
 
-The replay feeds simulated market observations through the same processing flow used by the application:
+The demo scenario progressively changes the HDFC Bank market state:
+
+09:30
+Normal
+
+10:10
+Initial movement
+
+10:20
+Unusual price movement
+
+10:40
+Volume acceleration
+
+11:00
+Multiple signals converge
+
+12:00+
+Significant attention event
+
+The replay feeds the same pipeline used by the application:
 
 Market Data
-     ↓
+    ↓
 Normalization
-     ↓
-Snapshots
-     ↓
+    ↓
 Signal Calculation
-     ↓
+    ↓
 Significance Engine
-     ↓
-Attention Event
-     ↓
-Pulse UI
+    ↓
+Attention Engine
+    ↓
+Pulse
 
-Example HDFC Bank scenario:
+This is important because the demo is not simply displaying a hardcoded final result.
 
-09:30   Normal trading
-10:32   Corporate event appears
-10:42   Volume begins accelerating
-11:03   Price declines
-11:24   Supporting information arrives
-12:15   Move reaches -2.4%
-14:30   Move reaches approximately -3.2%
+It demonstrates how the system's state changes as new market observations arrive.
 
-This allows the entire product story to be demonstrated in minutes rather than waiting for a live market event.
+Explanation Layer
+
+The explanation layer converts structured market evidence into a concise human-readable explanation.
+
+For example:
+
+HDFC Bank is showing an unusually large move
+relative to its historical behavior.
+
+The move is accompanied by elevated volume and
+material divergence from the broader market.
+
+Multiple independent signals agree that this
+deserves attention.
+
+The explanation is grounded in the signals already calculated by the system.
+
+Design principle
+
+The explanation layer should explain the evidence.
+
+It should not invent evidence.
+
+The current hackathon implementation uses deterministic structured explanations, while the architecture leaves room for a grounded LLM explanation service in a future version.
+
+Financial Safety Philosophy
+
+PULSE is designed as an information and attention tool.
+
+It does not attempt to:
+
+Give buy/sell recommendations
+Predict guaranteed future prices
+Replace financial judgment
+Manufacture certainty from incomplete data
+
+The system focuses on:
+
+What changed?
+Does it look unusual?
+Why might it matter?
+What evidence supports that conclusion?
+Data Quality
+
+Market information can become stale or inconsistent.
+
+PULSE therefore treats freshness as part of the intelligence pipeline.
+
+Observations contain information such as:
+
+value
+observedAt
+receivedAt
+source
+freshness
+
+The product distinguishes between:
+
+Fresh
+Delayed
+Stale
+
+A stale observation should reduce confidence rather than silently being treated as current.
+
+This is particularly important for a market-monitoring product.
 
 Architecture
-┌─────────────────────────────────────┐
-│              Next.js                │
-│         TypeScript + Tailwind       │
-└──────────────────┬──────────────────┘
-                   │ REST
-                   ▼
-┌─────────────────────────────────────┐
-│          Spring Boot Backend        │
-│              Java 21                │
-│                                     │
-│  Watchlist                          │
-│  Market Data                        │
-│  Snapshots                          │
-│  Signals                            │
-│  Significance                       │
-│  Attention                          │
-│  Explanations                       │
-└───────────────┬───────────┬─────────┘
-                │           │
-                ▼           ▼
-        ┌────────────┐  ┌───────────┐
-        │ PostgreSQL │  │   Redis   │
-        │            │  │           │
-        │ Source of  │  │ Fast      │
-        │ truth      │  │ access    │
-        └────────────┘  └───────────┘
 
-Pulse intentionally uses a modular monolith rather than microservices.
+PULSE uses a modular monolith architecture.
 
-For a focused hackathon product, this provides:
+                    ┌─────────────────────┐
+                    │      Next.js        │
+                    │     Frontend        │
+                    └──────────┬──────────┘
+                               │
+                               │ REST
+                               ▼
+                    ┌─────────────────────┐
+                    │    Spring Boot      │
+                    │      Backend        │
+                    ├─────────────────────┤
+                    │ Watchlist            │
+                    │ Market               │
+                    │ Snapshots            │
+                    │ Signals              │
+                    │ Significance         │
+                    │ Attention            │
+                    │ Explanations         │
+                    └───────┬───────┬─────┘
+                            │       │
+                            ▼       ▼
+                    ┌──────────┐ ┌──────────┐
+                    │PostgreSQL│ │  Redis   │
+                    └──────────┘ └──────────┘
+Why a modular monolith?
 
-simpler development
-fewer deployment dependencies
-easier debugging
-transactional consistency
-clear domain boundaries
-faster iteration
+The project was built within a 48-hour hackathon constraint.
 
-The architecture can be split into services later if scale requires it.
+Instead of introducing unnecessary distributed infrastructure, the system keeps domain boundaries clear inside a single backend.
 
+This gives:
+
+Faster development
+Easier debugging
+Lower operational complexity
+Clear separation of concerns
+A straightforward path to future service extraction
 Technology Stack
 Frontend
 Next.js
+React
 TypeScript
 Tailwind CSS
-React
 Backend
 Java 21
 Spring Boot
 Spring Data JPA
-REST APIs
+Spring Web
+Flyway
 Data
 PostgreSQL
 Redis
-Flyway migrations
-Engineering
-Maven Wrapper
-Git
-Docker Compose
-Core Data Model
+Deployment
+Vercel — Frontend
+Render — Backend
+Render PostgreSQL — Database
+Data Model
 
-The system is organized around several core entities:
-
-User
- │
- ├── Watchlist
- │      └── Watchlist Stocks
- │
- ├── User Checkpoint
- │
- └── Attention Events
-
-Stock
- │
- ├── Market Snapshots
- ├── Market Signals
- └── Market Events
-
-Important persisted concepts include:
+Core entities include:
 
 users
 watchlists
-watchlist stocks
-market snapshots
-market events
-market signals
-attention events
-user checkpoints
-user preferences
-Key API Endpoints
+watchlist_stocks
+stock_master
+
+market_snapshots
+market_signals
+market_events
+
+attention_events
+user_checkpoints
+user_preferences
+
+The model separates:
+
+Market state
+
+What is happening in the market.
+
+Derived intelligence
+
+What the system calculates from that market state.
+
+User state
+
+What the user has already seen or reviewed.
+
+This separation allows market observations to evolve independently from user attention state.
+
+API
 Watchlists
 GET    /api/watchlists
 POST   /api/watchlists
+
 GET    /api/watchlists/{id}/stocks
 POST   /api/watchlists/{id}/stocks/{symbol}
 DELETE /api/watchlists/{id}/stocks/{symbol}
@@ -376,181 +533,344 @@ Significance
 POST /api/significance/evaluate
 POST /api/significance/evaluate/{symbol}
 POST /api/significance/demo-minute/{minute}
+GET  /api/significance/demo-minute
 Attention
 GET  /api/attention
 POST /api/attention/{id}/view
 POST /api/attention/{id}/review
 POST /api/attention/reset
-Demo
+Production Deployment
 
-The application includes a deterministic demo market so the complete experience can be reproduced consistently.
+The application is deployed as two services.
 
-Start the infrastructure
+Vercel
+  │
+  │ HTTPS
+  ▼
+Render
+Spring Boot API
+  │
+  ├── PostgreSQL
+  │
+  └── Redis
+
+The frontend communicates with the backend through a configurable environment variable:
+
+NEXT_PUBLIC_API_URL
+
+The backend uses environment variables for production database configuration.
+
+CORS is configured separately for the production frontend origin.
+
+Local Development
+Prerequisites
+Node.js
+Java 21
+Docker
+Git
+Start infrastructure
+
+From the project root:
+
 docker compose up -d
-Start the backend
+
+This starts:
+
+PostgreSQL → localhost:5433
+Redis      → localhost:6379
+Start backend
+cd backend
+./mvnw spring-boot:run
 
 Windows:
 
 cd backend
 .\mvnw.cmd spring-boot:run
-Start the frontend
+
+Backend:
+
+http://localhost:8080
+Start frontend
 cd frontend
 npm install
 npm run dev
 
-Open:
+Frontend:
 
 http://localhost:3000
-Recommended Demo Flow
-1. Reset
+Demo Flow
 
-Click:
+The recommended demonstration takes approximately three minutes.
 
-Reset demo
+00:00 — Start
 
-The Attention Center should show:
+Open PULSE.
 
-0 meaningful changes
-2. Replay
+Show:
+
+Your watchlist watches the market.
+00:15 — Attention Center
+
+Show:
+
+1 meaningful change
+
+Then highlight HDFC Bank.
+
+00:30 — Why does it matter?
+
+Show:
+
+-3.31%
+12.0σ
+2.69× volume
+-3.81% vs market
+80 / 100
+SIGNIFICANT
+
+Explain that multiple independent signals agree.
+
+01:00 — Replay
 
 Click:
 
 Replay market
 
-Pulse progressively processes the HDFC Bank scenario.
+Show the system moving from normal conditions to a significant event.
 
-3. Surface the event
+01:30 — Evidence
 
-The Attention Center eventually shows:
-
-HDFC Bank
-SIGNIFICANT
-
--3.31%
-12σ
-2.69×
--3.81% vs market
-
-Attention Score: 80
-4. Investigate
-
-Click:
+Open:
 
 Why this matters →
 
-Review:
+Walk through the underlying signals.
 
-signal evidence
-market context
-divergence
-explanation
-change replay
-5. Review
+02:00 — Explanation
+
+Show the structured explanation generated from the evidence.
+
+02:20 — Watchlist
+
+Demonstrate adding/removing a stock.
+
+02:40 — Reset
 
 Click:
 
-Review
+Reset demo
 
-The event moves through the attention lifecycle.
+Return to a clean state.
 
-Why This Approach?
+03:00 — Closing
 
-There are many ways to build a market monitoring system.
+"A traditional watchlist tells you what happened. PULSE tells you what changed, whether it matters, why it matters, and what evidence supports that conclusion."
 
-Pulse deliberately avoids turning the project into a collection of infrastructure technologies.
+And:
 
-Instead, the architecture is optimized around the user problem:
+"When nothing matters, PULSE gets out of your way."
 
-Reduce the amount of market information a user has to process manually.
+Engineering Tradeoffs
+Why deterministic scoring instead of letting AI decide?
 
-That leads to several design decisions.
+Because significance needs to be:
 
-Deterministic Significance
+Explainable
+Consistent
+Testable
+Reproducible
 
-Market significance should be reproducible and testable.
+AI is better suited to explaining structured evidence than determining whether an event is objectively significant.
 
-AI as an Explanation Layer
+Why not Kafka?
 
-AI is useful for translating structured evidence into natural language, but should not silently invent facts or make the core decision.
+Kafka would introduce operational complexity that is difficult to justify within a 48-hour hackathon.
 
-Precision Over Recall
+The current architecture uses:
 
-A system that generates dozens of low-value alerts quickly becomes another source of noise.
+Scheduled jobs
+Async execution
+PostgreSQL
+Redis
+Modular domain boundaries
 
-User Checkpointing
+Kafka or CDC-based pipelines can be introduced if the system needs to scale to substantially larger event volumes.
 
-"Something changed" only makes sense relative to what the user has already seen.
+Why PostgreSQL?
 
-Replayable Intelligence
+PostgreSQL provides:
 
-The same processing pipeline should work for live observations and deterministic demonstrations.
+Durable source of truth
+Strong relational modeling
+Transactional consistency
+Flexible JSON/text metadata
+Straightforward local and cloud deployment
+Why Redis?
 
-Engineering Trade-offs
+Redis is used as an acceleration layer rather than the source of truth.
 
-This project was designed and implemented under a strict hackathon time constraint.
+PostgreSQL remains authoritative.
 
-The following were intentionally kept out of the initial implementation:
+This makes cache invalidation and recovery simpler.
 
-Kafka
-microservice decomposition
-vector databases
-RAG pipelines
-ML-based personalization
-complex notification infrastructure
-brokerage integration
+What Makes PULSE Different?
 
-These can be added later without changing the core product concept.
+Most watchlists optimize for:
 
-The priority was:
+More information
 
-Correct product loop
-        >
-Reliable intelligence
-        >
-Explainability
-        >
-Demoability
-        >
-Infrastructure complexity
+PULSE optimizes for:
+
+Better attention
+
+A normal watchlist asks:
+
+"What are the prices?"
+
+PULSE asks:
+
+"What changed since you last checked?"
+
+Then:
+
+"Does it matter?"
+
+Then:
+
+"Why?"
+
+And finally:
+
+"What evidence supports that?"
+
+That is the product's central idea.
+
 Future Roadmap
-P1
-richer market context
-more corporate event types
-adaptive attention preferences
-richer change replay
-live news correlation
-improved explanation generation
-P2
-push notifications
-multiple watchlists
-daily/weekly intelligence digest
-personalized attention models
-broader asset coverage
-production-grade streaming infrastructure
-Product Philosophy
 
-Pulse is built around a simple principle:
+The architecture supports several natural extensions.
+
+Personalized Attention
+
+Allow users to define what matters most to them:
+
+Price volatility
+Sector divergence
+Corporate events
+Volume
+Specific securities
+Grounded AI Explanations
+
+Introduce an LLM behind the existing explanation interface.
+
+The model would receive only structured evidence produced by the intelligence engine.
+
+Signals
+   ↓
+Evidence Object
+   ↓
+LLM
+   ↓
+Grounded Explanation
+
+The LLM would not determine significance.
+
+Market Context
+
+Add broader context:
+
+Stock
+ ↓
+Sector
+ ↓
+Benchmark
+ ↓
+Market
+
+This allows users to understand whether a move is company-specific or market-wide.
+
+Notifications
+
+Surface only high-confidence significant events through:
+
+Push notifications
+Email
+Daily digests
+
+The goal would remain:
+
+Fewer, better alerts.
+
+Multiple Watchlists
+
+Support different attention contexts such as:
+
+My Stocks
+Long Term
+High Risk
+Tech
+Financials
+Production Market Data
+
+Replace the deterministic demo provider with a production market-data provider while keeping the same provider abstraction.
+
+MarketDataProvider
+       │
+       ├── Demo Provider
+       │
+       └── Live Provider
+
+This allows the intelligence engine to remain independent of the underlying market-data vendor.
+
+Hackathon Context
+
+PULSE was designed and implemented as a 72-hour Groww CODE 2026 hackathon project.
+
+The primary engineering objective was not to maximize the number of technologies used.
+
+It was to build a complete product loop:
+
+Market Data
+    ↓
+Intelligence
+    ↓
+Attention
+    ↓
+Explanation
+    ↓
+User Review
+
+while keeping the system:
+
+Demonstrable
+Explainable
+Testable
+Deployable
+Extensible
+Product Philosophy
 
 Attention is scarce.
 
-A market application shouldn't force users to inspect every movement just because the system can display it.
+Markets produce an enormous amount of information.
 
-The goal is not to show more information.
+The job of a smart watchlist should not be to show users everything.
 
-The goal is to surface better information at the right time.
+It should help them identify what deserves their attention.
 
-Closing
+PULSE is built around that principle.
 
-A traditional watchlist tells you what happened.
-
-Pulse tells you:
-
-what changed, whether it's unusual, why it might matter, and what evidence supports that conclusion.
-
-And when nothing matters:
-
-Pulse gets out of your way.
-
+Detect less noise.
+Surface more signal.
+Explain the difference.
 Built for Groww CODE 2026
 
-PULSE — Your watchlist watches the market. You watch what matters.
+PULSE
+
+Your watchlist watches the market. You watch what matters.
+
+Built with:
+
+Next.js · TypeScript · Java · Spring Boot · PostgreSQL · Redis
+
+Live Demo:
+
+https://frontend-kappa-three-uzb7061grc.vercel.app/
